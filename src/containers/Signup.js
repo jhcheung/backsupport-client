@@ -9,14 +9,14 @@ import "./Signup.css";
 
 export default function Signup(props) {
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
 
   function validateForm() {
     return (
-      email.length > 0 &&
+      username.length > 0 &&
       password.length > 0 &&
       password === confirmPassword
     );
@@ -24,7 +24,8 @@ export default function Signup(props) {
 
   async function handleSubmit(event) {
 	event.preventDefault();
-	props.signup({ user: { email: email, password: password, password_confirmation: confirmPassword }})
+	const newUser = { user: { username: username, password: password, password_confirmation: confirmPassword }}
+	props.signup(newUser)
 }
 
 
@@ -32,13 +33,13 @@ export default function Signup(props) {
   function renderForm() {
     return (
       <form onSubmit={handleSubmit}>
-        <FormGroup controlId="email">
-          <FormLabel>Email</FormLabel>
+        <FormGroup controlId="username">
+          <FormLabel>Username</FormLabel>
           <FormControl
             autoFocus
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+            type="username"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
           />
         </FormGroup>
         <FormGroup controlId="password">

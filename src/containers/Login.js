@@ -4,28 +4,28 @@ import "./Login.css";
 
 
 export default function Login(props) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   function validateForm() {
-    return email.length > 0 && password.length > 0;
+    return username.length > 0 && password.length > 0;
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    props.login({ user: { email: email, password: password } })
+    props.login({ user: { username: username, password: password } })
   }
 
   return (
     <div className="Login">
       <form onSubmit={handleSubmit}>
-        <FormGroup controlId="email" size="lg">
-          <FormLabel>Email</FormLabel>
+        <FormGroup controlId="username" size="lg">
+          <FormLabel>Username</FormLabel>
           <FormControl
             autoFocus
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+            type="username"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
           />
         </FormGroup>
         <FormGroup controlId="password" size="lg">

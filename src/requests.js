@@ -5,6 +5,8 @@ const usersUrl = 'http://localhost:3000/api/v1/users'
 const ticketsUrl = 'http://localhost:3000/api/v1/tickets'
 const messagesUrl = 'http://localhost:3000/api/v1/messages'
 const loginUrl = 'http://localhost:3000/api/v1/login'
+const profileUrl = 'http://localhost:3000/api/v1/profile'
+
 
 
 // parse incoming data
@@ -94,5 +96,17 @@ export const createMessage = (newMessage) => {
 }
 
 
+//////////////////////////////////////////////////////
 
 
+export const fetchProfile = () => { 
+    const profileObj = {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.token}`
+        }
+    }
+    return fetch(profileUrl, profileObj)
+        .then(parseData)
+        .catch(catchError)
+}
