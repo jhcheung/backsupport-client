@@ -1,0 +1,10 @@
+@media all and (min-width: 480px) {
+    .new-ticket-form {
+      padding: 60px 0;
+    }
+  
+    .new-ticket-form form {
+      margin: 0 auto;
+      max-width: 320px;
+    }
+  }
