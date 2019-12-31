@@ -23,14 +23,23 @@ export default function Signup(props) {
   }
 
   async function handleSubmit(event) {
-	event.preventDefault();
-	const newUser = { user: { username: username, password: password, password_confirmation: confirmPassword }}
-	props.signup(newUser)
-}
+    event.preventDefault();
+    let newUser = { user: { username: username, password: password, password_confirmation: confirmPassword }}
+    if (props.agent && props.admin) {
+      newUser.user.agent = true
+      newUser.user.agent = true
+    } else if (props.agent) {
+      newUser.user.agent = true
+    } else if (props.admin) {
+      newUser.user.agent = true
+    }
+    props.signup(newUser)
+  }
 
 
 
   function renderForm() {
+    console.log(props)
     return (
       <form onSubmit={handleSubmit}>
         <FormGroup controlId="username">

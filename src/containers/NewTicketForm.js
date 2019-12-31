@@ -8,7 +8,7 @@ import {
 import "./NewTicketForm.css";
 
 
-export default function NewTicketForm(props) {
+export default function NewTicketForm({ currentUser, createTicket, createMessage }) {
 
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
@@ -19,16 +19,14 @@ export default function NewTicketForm(props) {
 
   function validateForm() {
     return (
-      // email.length > 0 &&
-      // password.length > 0 &&
-      // password === confirmPassword
       title.length > 0 &&
       content.length > 0
     );
   }
 
   async function handleSubmit(event) {
-	  event.preventDefault();
+    event.preventDefault();
+    createTicket({ title: title, open: true, customer_id: currentUser.id })
   }
 
 
@@ -36,31 +34,6 @@ export default function NewTicketForm(props) {
   function renderForm() {
     return (
       <form onSubmit={handleSubmit}>
-        {/* <FormGroup controlId="email">
-          <FormLabel>Email</FormLabel>
-          <FormControl
-            autoFocus
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup controlId="password">
-          <FormLabel>Password</FormLabel>
-          <FormControl
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup controlId="confirmPassword">
-          <FormLabel>Confirm Password</FormLabel>
-          <FormControl
-            type="password"
-            onChange={e => setConfirmPassword(e.target.value)}
-            value={confirmPassword}
-          />
-        </FormGroup> */}
         <FormGroup controlId="title">
           <FormLabel>Title</FormLabel>
           <FormControl

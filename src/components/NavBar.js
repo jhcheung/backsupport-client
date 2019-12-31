@@ -1,14 +1,15 @@
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import React from 'react'
 
-function NavBar({currentUser, logout}) {
+function NavBar({location, currentUser, logout}) {
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Navbar.Brand href="/login">Back Support</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link href="/signup">Sign Up</Nav.Link>
+                { location.pathname !== '/login' && !currentUser ? <Nav.Link href="/login">Login</Nav.Link> : null }
+                { location.pathname !== '/signup' && !currentUser ? <Nav.Link href="/signup">Sign Up</Nav.Link> : null }
                     <Nav.Link href="/tickets/new">Create a New Ticket</Nav.Link>
                 </Nav>
 
@@ -16,7 +17,7 @@ function NavBar({currentUser, logout}) {
                     {
                         currentUser
                         ? 
-                            <NavDropdown title={currentUser.data.attributes.username} id="collapsible-nav-dropdown" alignRight >
+                            <NavDropdown title={currentUser.attributes.username} id="collapsible-nav-dropdown" alignRight >
                                 <NavDropdown.Item href="#action/3.1">My Tickets</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.2">All Open Tickets</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
