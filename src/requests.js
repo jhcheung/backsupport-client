@@ -6,6 +6,11 @@ const ticketsUrl = 'http://localhost:3000/api/v1/tickets'
 const messagesUrl = 'http://localhost:3000/api/v1/messages'
 const loginUrl = 'http://localhost:3000/api/v1/login'
 const profileUrl = 'http://localhost:3000/api/v1/profile'
+const defaultHeaderObj = {
+    headers: {
+        Authorization: `Bearer ${localStorage.token}`
+    }
+}
 
 
 
@@ -45,16 +50,14 @@ export const login = (userCreds) => {
         },
         body: JSON.stringify(userCreds)
     }
-
     return fetch(loginUrl, loginObj)
             .then(parseData)
             .catch(catchError)
-
 }
 
 //////////////////////////////////////////////////////
 
-export const fetchTickets = () => fetch(ticketsUrl)
+export const fetchTickets = () => fetch(ticketsUrl, defaultHeaderObj)
 .then(parseData)
 .catch(catchError)
 
@@ -63,7 +66,8 @@ export const createTicket = (newTicket) => {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json'
+            Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.token}`
         },
         body: JSON.stringify(newTicket)
     }
@@ -76,7 +80,7 @@ export const createTicket = (newTicket) => {
 
 //////////////////////////////////////////////////////
 
-export const fetchMessages = () => fetch(messagesUrl)
+export const fetchMessages = () => fetch(messagesUrl, defaultHeaderObj)
 .then(parseData)
 .catch(catchError)
 
@@ -85,7 +89,8 @@ export const createMessage = (newMessage) => {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json'
+            Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.token}`
         },
         body: JSON.stringify(newMessage)
     }

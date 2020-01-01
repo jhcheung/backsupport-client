@@ -4,7 +4,7 @@ import NavBar from './components/NavBar';
 import ErrorMessage from './components/ErrorMessage';
 import Login from './containers/Login'
 import Signup from './containers/Signup'
-import NewTicketForm from './containers/NewTicketForm'
+import TicketContainer from './containers/TicketContainer'
 import * as requests from './requests'
 
 
@@ -17,52 +17,52 @@ class App extends Component {
     currentUser: null,
     errorMessage: "",
     tickets: [],
-    messages: []
+    messages: [],
+    loaded: false
   }
 
   componentDidMount() {
-    if (this.state.currentUser) {
-      requests.fetchTickets()
-        .then(data => this.setState({tickets: data.tickets.data}))
-      requests.fetchMessages()
-        .then(data => this.setState({tickets: data.messages.data}))
 
-    }
     if(localStorage.token) {
       requests.fetchProfile()
-        .then(data => {
-          if (data.user) {
-            this.setState({ currentUser: { ...data.user.data } })
+        .then(json => {
+          if (json.data.attributes) {
+            this.setState({ currentUser: { ...json.data } })
+            requests.fetchTickets()
+            .then(json => {
+              this.setState({tickets: json.data, loaded: true})
+            })    
           } 
         })
+    } else {
+      this.setState({ loaded: true })
     }
   }
 
   login = (userCreds) => {
     requests.login(userCreds)
-      .then(data => {
-        if (data.user) {
-          this.setState({ currentUser: { ...data.user.data } }) 
-          localStorage.token = data.jwt
-        } else if (data.error) {
-          this.setState({ error: data.error })
+      .then(json => {
+        if (json.data.attributes) {
+          this.setState({ currentUser: { ...json.data } }) 
+          localStorage.token = json.data.attributes.jwt_token
+        } else if (json.data.error) {
+          this.setState({ error: json.error })
         } else {
-          this.setState({ errorMessage: data.errorMessage })
+          this.setState({ errorMessage: json.data.errorMessage })
         }
       })
   }
 
   signup = (userCreds) => {
     requests.createUser(userCreds)
-      .then(data => {
-        if (data.user) {
-          this.setState({ currentUser: { ...data.user.data } }) 
-          console.log(data.user)
-          localStorage.token = data.jwt
-        } else if (data.error) {
-          this.setState({ error: data.error })
+      .then(json => {
+        if (json.data.user) {
+          this.setState({ currentUser: { ...json.data } }) 
+          localStorage.token = json.data.attributes.jwt_token
+        } else if (json.data.error) {
+          this.setState({ error: json.error })
         } else {
-          this.setState({ errorMessage: data.errorMessage })
+          this.setState({ errorMessage: json.errorMessage })
         }
       })  
   }
@@ -77,7 +77,7 @@ class App extends Component {
     })
   }
 
-  createTicket = (ticketDetails) => {
+  createTicket = (ticketDetails, content) => {
     requests.createTicket(ticketDetails)
       .then(data => {
           if (data.ticket) {
@@ -86,6 +86,7 @@ class App extends Component {
                 tickets: [...prevState.tickets, {...data.ticket.data}]
               })
             })
+            this.createMessage({ message: { content: content, ticket_id: parseInt(data.ticket.data.id), user_id: parseInt(this.state.currentUser.id) }})
           }
       })
   }
@@ -107,7 +108,7 @@ class App extends Component {
 
   
   render() {
-    console.log(this.state.currentUser, localStorage.token)
+    console.log(this.state.loaded && !this.state.currentUser)
     return (
       <div className="App">
         <NavBar {...this.props} currentUser={this.state.currentUser} logout={this.logout}/>
@@ -115,7 +116,18 @@ class App extends Component {
         <Switch>
             {/* <Route path="/movies" render={(routerProps) => <MovieContainer movies={this.state.movies} {...routerProps}/>}/> */}
             {/* <Route path="/home" render={() => <WelcomePage />}/> */}
-            <Route exact path="/tickets" />
+
+            <Route path="/tickets" render={() =>  this.state.loaded && !this.state.currentUser
+            
+            ? <Redirect to="/login" />
+              : <TicketContainer tickets={this.state.tickets} 
+                  currentUser={this.state.currentUser} 
+                  createTicket={this.createTicket}
+                  createMessage={this.createMessage}
+                  history={this.props.history} />
+
+              } />    
+
             <Route path="/admin/signup">
               { this.state.currentUser ? <Redirect to="/tickets/new" /> : <Signup signup={this.signup} admin={true} agent={true}/>}
             </Route>
@@ -124,9 +136,6 @@ class App extends Component {
             </Route>
             <Route path="/signup">
               {this.state.currentUser ? <Redirect to="/tickets/new" /> : <Signup signup={this.signup}/>}
-            </Route>
-            <Route exact path="/tickets/new">
-              {this.state.currentUser ? <NewTicketForm createMessage={this.createMessage} createTicket={this.createTicket} currentUser={this.state.currentUser}/> : <Redirect to="/login" />}
             </Route>
             {/* <Route exact path="/" render={() => <div>Whats up I'm the welcome page!!!</div>} /> */}
             {/* <Route path="" render={() => <div><h1>NOT FOUND</h1>YOU ARE SOMEWHERE RANDOM</div>}/> */}

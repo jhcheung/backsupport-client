@@ -8,11 +8,8 @@ import {
 import "./NewTicketForm.css";
 
 
-export default function NewTicketForm({ currentUser, createTicket, createMessage }) {
+export default function NewTicketForm({ currentUser, createTicket }) {
 
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] =  useState("");
 
@@ -26,7 +23,7 @@ export default function NewTicketForm({ currentUser, createTicket, createMessage
 
   async function handleSubmit(event) {
     event.preventDefault();
-    createTicket({ title: title, open: true, customer_id: currentUser.id })
+    createTicket({ ticket: { title: title, open: true, customer_id: parseInt(currentUser.id) }}, content)
   }
 
 
@@ -66,7 +63,7 @@ export default function NewTicketForm({ currentUser, createTicket, createMessage
 
   return (
     <div className="new-ticket-form">
-      {renderForm()}
+      { renderForm() }
     </div>
   );
 }
