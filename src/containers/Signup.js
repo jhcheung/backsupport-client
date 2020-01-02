@@ -27,11 +27,11 @@ export default function Signup(props) {
     let newUser = { user: { username: username, password: password, password_confirmation: confirmPassword }}
     if (props.agent && props.admin) {
       newUser.user.agent = true
-      newUser.user.agent = true
+      newUser.user.admin = true
     } else if (props.agent) {
       newUser.user.agent = true
     } else if (props.admin) {
-      newUser.user.agent = true
+      newUser.user.admin = true
     }
     props.signup(newUser)
   }

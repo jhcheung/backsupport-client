@@ -1,43 +1,39 @@
 import React from 'react';
 import TicketInfo from '../components/TicketInfo'
+import MessagesList from './MessagesList'
+import NewMessageForm from '../components/NewMessageForm'
+import { Row, Col } from 'react-bootstrap'
 
 class TicketPage extends React.Component {
-  state = {
-    
-  }
 
-//   toggleNewReviewForm = () => {
-//     this.setState((prevState) => ({ addingReview: !prevState.addingReview }))
-//   }
 
-//   renderSingleReview = (review) => {
-//     return (
-//       <div key={review.id} className="review-box">
-//         <div>{review.stars > 0 ? "⭐️".repeat(review.stars) : "👎🏽"}</div>
-//         <div>{review.content}</div>
-//         <div>
-//           <span className="review-author">According to {review.author_name}</span>
-//           <span className="review-trash" onClick={() => this.deleteReview(review.id)}> &emsp;  🚮</span>
-//         </div>
-        
-//       </div>
-//     )
-//   }
-
-//   renderReviews = (selectedMovie) => {
-//     return selectedMovie.reviews.length ? selectedMovie.reviews.map(review => this.renderSingleReview(review)) : "No reviews yet"
-//   }
 
   render() {
-    console.log(this.props)
-    let selectedTicket = this.props.tickets.find(ticket => ticket.id === this.props.match.params.id)
-    console.log(selectedTicket)
+    console.log(this.props.selectedTicket)
+    const ticketMessages = this.props.messages.filter(message => message.relationships.ticket.data.id === this.props.match.params.id)
+
     return (
-      <div className="ticket-page">
-          {/* <div className="back-button" onClick={() => this.props.history.goBack()}>⬅️</div> */}
-          {/* make sure selectedTicket isn't null before you try to render anything */}
-          {selectedTicket && <TicketInfo ticket={selectedTicket} />} 
-      </div>
+      this.props.selectedTicket 
+      ?
+        <>
+        <h2>{this.props.selectedTicket.attributes.title}</h2>
+        <Row className="show-grid" float="center">
+            <Col xs={3} >
+            </Col>
+            <Col xs={6}  className="ticket-page">
+                <TicketInfo currentUser={this.props.currentUser} ticket={this.props.selectedTicket} toggleTicket={this.props.toggleTicket} users={this.props.users} setOwnerToUser={this.props.setOwnerToUser} />
+                <MessagesList users={this.props.users} messages={ticketMessages} currentUser={this.props.currentUser}/>
+                { this.props.selectedTicket.attributes.open 
+                ? 
+                  <NewMessageForm currentUser={this.props.currentUser} createMessage={this.props.createMessage} selectedTicketId={this.props.match.params.id}/>
+                : null
+                }
+              </Col>
+            <Col xs={3}>
+            </Col>
+        </Row>
+        </>
+      : null
     );
   }
 }

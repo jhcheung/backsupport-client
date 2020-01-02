@@ -1,0 +1,17 @@
+.ticket-list {
+    background: #f8f8f8 none repeat scroll 0 0;
+    overflow: hidden;
+    border: 1px solid #c4c4c4;
+}
+
+.ticket-list-item.open {
+    border-bottom: 1px solid #c4c4c4;
+    margin: 0;
+    padding: 18px 16px 10px;
+}
+.ticket-list-item.closed {
+    background: red;
+    border-bottom: 1px solid #c4c4c4;
+    margin: 0;
+    padding: 18px 16px 10px;
+}

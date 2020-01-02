@@ -8,6 +8,8 @@ const loginUrl = 'http://localhost:3000/api/v1/login'
 const profileUrl = 'http://localhost:3000/api/v1/profile'
 const defaultHeaderObj = {
     headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
         Authorization: `Bearer ${localStorage.token}`
     }
 }
@@ -21,7 +23,7 @@ const catchError = error => console.log(`%c${error}`, 'color: red;')
 
 //////////////////////////////////////////////////////
 
-export const fetchUsers = () => fetch(usersUrl)
+export const fetchUsers = () => fetch(usersUrl, defaultHeaderObj)
 .then(parseData)
 .catch(catchError)
 
@@ -75,6 +77,36 @@ export const createTicket = (newTicket) => {
     return fetch(ticketsUrl, createTicketObj)
             .then(parseData)
             .catch(catchError)
+}
+
+export const toggleTicket = (id) => {
+    const toggleTicketObj = {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.token}`
+        }
+    
+    }
+    return fetch(ticketsUrl + `/${id}/toggle`, toggleTicketObj)
+        .then(parseData)
+        .catch(catchError)
+}
+
+export const updateTicket = (id, newDetails) => {
+    const updateTicketObj = {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.token}`
+        },
+        body: JSON.stringify(newDetails)
+    }
+    return fetch(ticketsUrl + `/${id}`, updateTicketObj)
+        .then(parseData)
+        .catch(catchError)
 }
 
 

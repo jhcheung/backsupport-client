@@ -1,0 +1,7 @@
+.form-group textarea {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    color: #4c4c4c;
+    font-size: 15px;
+    min-height: 48px;
+    width: 100%;
+}
