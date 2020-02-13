@@ -7,6 +7,7 @@ import Login from './containers/Login'
 import Signup from './containers/Signup'
 import TicketContainer from './containers/TicketContainer'
 import * as requests from './requests'
+import { ActionCableConsumer } from 'react-actioncable-provider'
 
 
 
@@ -58,11 +59,11 @@ class App extends Component {
       .then(json => {
         if (json.error) {
           this.setState({ errorMessage: json.error })
-        } else if (json.data.attributes) {
+        } else if (json.data) {
           this.setState({ currentUser: { ...json.data } }) 
           localStorage.token = json.data.attributes.jwt_token
         } else {
-          this.setState({ errorMessage: json.data.errorMessage })
+          this.setState({ errorMessage: json.message })
         }
       })
   }
@@ -70,7 +71,7 @@ class App extends Component {
   signup = (userCreds) => {
     requests.createUser(userCreds)
       .then(json => {
-        console.log(json)
+        // console.log(json)
         if (json.error) {
           this.setState({ errorMessage: json.error })
         } else if (json.data.attributes) {
@@ -96,11 +97,11 @@ class App extends Component {
     requests.createTicket(ticketDetails)
       .then(json => {
           if (json.data) {
-            this.setState(prevState => {
-              return( {
-                tickets: [...prevState.tickets, {...json.data}]
-              })
-            })
+            // this.setState(prevState => {
+            //   return( {
+            //     tickets: [...prevState.tickets, {...json.data}]
+            //   })
+            // })
             this.createMessage({ message: { content: content, ticket_id: parseInt(json.data.id), user_id: parseInt(this.state.currentUser.id) }})
             this.props.history.push(`/tickets/${json.data.id}`)
           }
@@ -108,19 +109,39 @@ class App extends Component {
     
   }
 
+  addTicket = (ticket) => {
+    const newTicket = ticket.data
+    this.setState(prevState => {
+      return( {
+        tickets: [...prevState.tickets, newTicket]
+      })
+    })
+}
+
   createMessage = (messageDetails) => {
     requests.createMessage(messageDetails)
       .then(json => {
-        if (json.data) {
-          this.setState(prevState => {
-            return(
-              {
-                messages: [...prevState.messages, {...json.data}]
-              }
-            )
-          })
-        }
+        // if (json.data) {
+        //   this.setState(prevState => {
+        //     return(
+        //       {
+        //         messages: [...prevState.messages, {...json.data}]
+        //       }
+        //     )
+        //   })
+        // }
       })
+  }
+
+  addMessage = (message) => {
+    const newMessage = message.data
+    this.setState(prevState => {
+      return(
+        {
+          messages: [...prevState.messages, newMessage]
+        }
+      )
+    })
   }
 
   toggleTicket = (ticketId) => {
@@ -152,9 +173,16 @@ class App extends Component {
  
   
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <div className="App">
+        <ActionCableConsumer 
+          channel={{ channel: "TicketsChannel"}}
+          onReceived={
+            (ticket) => this.addTicket(ticket)
+          }
+        />
+
         <NavBar {...this.props} currentUser={this.state.currentUser} logout={this.logout}/>
         { this.state.errorMessage ? <ErrorMessage errorMessage={this.state.errorMessage}/> : null }
         <Switch>
@@ -165,6 +193,7 @@ class App extends Component {
             this.state.loaded && !this.state.currentUser
             ? <Redirect to="/login" />
               : <TicketContainer tickets={this.state.tickets} 
+                  addMessage={this.addMessage}
                   loaded={this.state.loaded}
                   users={this.state.users}
                   messages={this.state.messages}

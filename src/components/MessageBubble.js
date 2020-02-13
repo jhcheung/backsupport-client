@@ -10,7 +10,7 @@ export default class MessageBubble extends Component {
         const username = users.find(user => user.id === message.relationships.user.data.id).attributes.username
 
         timeCreated = timeCreated.substring(0, timeCreated.length - 5)
-        console.log(message, currentUser)
+        // console.log(message, currentUser)
 
         return (
             <div className={`${currentUser.id === message.relationships.user.data.id ? "outgoing" : "incoming"}`}>

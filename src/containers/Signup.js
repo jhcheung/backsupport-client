@@ -39,7 +39,7 @@ export default function Signup(props) {
 
 
   function renderForm() {
-    console.log(props)
+    // console.log(props)
     return (
       <form onSubmit={handleSubmit}>
         <FormGroup controlId="username">

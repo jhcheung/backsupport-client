@@ -39,6 +39,7 @@ class TicketContainer extends React.Component {
                                                                               createTicket={this.props.createTicket} 
                                                                               currentUser={this.props.currentUser} /> } />
           <Route path="/tickets/:id" render={(routerProps) => <TicketPage {...routerProps}
+                                                                          addMessage={this.props.addMessage}
                                                                           loaded={this.props.loaded}
                                                                           selectedTicket={this.props.tickets.find(ticket => ticket.id === routerProps.match.params.id)}
                                                                           createMessage={this.props.createMessage} 
