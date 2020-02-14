@@ -9,7 +9,11 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-ReactDOM.render(<ActionCableProvider url='ws://localhost:3000/cable'><Router><Route path="/" component={App} /></Router></ActionCableProvider>, document.getElementById('root'));
+ReactDOM.render(<ActionCableProvider url={`ws://${process.env.REACT_APP_API_URL}/cable`}>
+                    <Router>
+                        <Route path="/" component={App} />
+                    </Router>
+                </ActionCableProvider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
