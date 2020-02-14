@@ -1,11 +1,12 @@
 // headers --> use these at your own discretion
 // const headers = {'Content-Type': 'application/json', 'Accepts': 'application/json'}
 // urls
-const usersUrl = 'http://localhost:3000/api/v1/users'
-const ticketsUrl = 'http://localhost:3000/api/v1/tickets'
-const messagesUrl = 'http://localhost:3000/api/v1/messages'
-const loginUrl = 'http://localhost:3000/api/v1/login'
-const profileUrl = 'http://localhost:3000/api/v1/profile'
+const backendUrl = process.env.REACT_APP_API_URL
+const usersUrl = `${backendUrl}/api/v1/users`
+const ticketsUrl = `${backendUrl}/api/v1/tickets`
+const messagesUrl = `${backendUrl}/api/v1/messages`
+const loginUrl = `${backendUrl}/api/v1/login`
+const profileUrl = `${backendUrl}/api/v1/profile`
 const defaultHeaderObj = {
     headers: {
         'Content-Type': 'application/json',
