@@ -9,7 +9,7 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-ReactDOM.render(<ActionCableProvider url={`ws://${process.env.REACT_APP_API_URL}/cable`}>
+ReactDOM.render(<ActionCableProvider url={`wss://${process.env.REACT_APP_API_URL}/cable`}>
                     <Router>
                         <Route path="/" component={App} />
                     </Router>
