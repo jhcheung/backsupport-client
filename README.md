@@ -1,4 +1,4 @@
-# Trubya Rails
+# BackSupport Client
 
 Ticketing system based on Zendesk
 Hosted on Heroku: http://backsupport-client.herokuapp.com/
