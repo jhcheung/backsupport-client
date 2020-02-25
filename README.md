@@ -8,13 +8,13 @@ Hosted on Heroku: http://backsupport-client.herokuapp.com/
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
-Back-Support API running
+[Back-Support API](https://github.com/jhcheung/backsupport-backend) running
 
 React
 
 ### Running on local machine
 
-First, install the dependencies of the app:
+First, install the dependencies of the app using NPM:
 
 ```
 npm install
