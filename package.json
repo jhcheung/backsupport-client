@@ -15,7 +15,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "react-scrollable-feed": "^1.1.2",
-    "serve": "^11.3.0"
+    "serve": "^11.3.2"
   },
   "scripts": {
     "start": "serve -s build",
