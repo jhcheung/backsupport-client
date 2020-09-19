@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.5",
     "bootstrap": "^4.5.2",
     "minimist": "^1.2.5",
+    "node-fetch": "^2.6.1",
     "react": "^16.13.1",
     "react-actioncable-provider": "github:ihollander/react-actioncable-provider",
     "react-bootstrap": "^1.3.0",
