@@ -71,7 +71,6 @@ class App extends Component {
   signup = (userCreds) => {
     requests.createUser(userCreds)
       .then(json => {
-        // console.log(json)
         if (json.error) {
           this.setState({ errorMessage: json.error })
         } else if (json.data.attributes) {
@@ -97,11 +96,6 @@ class App extends Component {
     requests.createTicket(ticketDetails)
       .then(json => {
           if (json.data) {
-            // this.setState(prevState => {
-            //   return( {
-            //     tickets: [...prevState.tickets, {...json.data}]
-            //   })
-            // })
             this.createMessage({ message: { content: content, ticket_id: parseInt(json.data.id), user_id: parseInt(this.state.currentUser.id) }})
             this.props.history.push(`/tickets/${json.data.id}`)
           }
@@ -121,15 +115,7 @@ class App extends Component {
   createMessage = (messageDetails) => {
     requests.createMessage(messageDetails)
       .then(json => {
-        // if (json.data) {
-        //   this.setState(prevState => {
-        //     return(
-        //       {
-        //         messages: [...prevState.messages, {...json.data}]
-        //       }
-        //     )
-        //   })
-        // }
+
       })
   }
 
