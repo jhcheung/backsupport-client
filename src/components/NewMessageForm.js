@@ -31,7 +31,6 @@ export default function NewMessageForm({ currentUser, createMessage, selectedTic
       <form onSubmit={handleSubmit}>
         <FormGroup controlId="content">
           <FormControl 
-            // as="textarea" rows="3" 
             type="text"
             onChange={e => setContent(e.target.value)}
             value={content}
